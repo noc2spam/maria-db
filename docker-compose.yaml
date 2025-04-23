@@ -1,0 +1,25 @@
+services:
+  db:
+      container_name: mk-db
+      restart: always
+      image: mariadb:latest
+      env_file:
+        - .env
+      ports:
+        - '3306:3306'
+      volumes:
+        - ./data:/var/lib/mysql
+      environment:
+        MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MARIADB_DATABASE: ${MYSQL_DATABASE}
+        MARIADB_USER: ${MYSQL_USER}
+  phpmyadmin:
+    restart: always
+    container_name: mk-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8202:80'
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3307
+      UPLOAD_LIMIT: 300M
